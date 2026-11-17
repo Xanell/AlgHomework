@@ -85,42 +85,41 @@ func IsAnagramMap(a, b string) bool {
 	return true
 }
 
-// CanFulfill - «склад»: можно ли собрать заказ order из товаров stock.
-// Каждый товар на складе можно отдать один раз. По желанию.
-//
-//	функция canFulfill(stock, order):
-//	    left = пустой словарь
-//	    для каждого item в stock:
-//	        left[item] = left[item] + 1
-//	    для каждого item в order:
-//	        если left[item] == 0:
-//	            вернуть нет
-//	        left[item] = left[item] − 1
-//	    вернуть да
 func CanFulfill(stock, order []string) bool {
-	// TODO: ваш код
-	return false
+	left := map[string]int{}
+	for _, item := range stock {
+		left[item]++
+	}
+	for _, item := range order {
+		if left[item] == 0 {
+			return false
+		}
+		left[item]--
+	}
+	return true
 }
 
-// MinStack - стек, который умеет за O(1) отвечать, какой в нём сейчас минимум.
-// Со звёздочкой. Поля структуры придумайте сами.
 type MinStack struct {
-	// TODO: ваши поля
+	elements []int
+	minimums []int
 }
 
-// Push кладёт x на верх стека.
 func (s *MinStack) Push(x int) {
-	// TODO: ваш код
+	s.elements = append(s.elements, x)
+	if len(s.minimums) == 0 || x < s.minimums[len(s.minimums)-1] {
+		s.minimums = append(s.minimums, x)
+	} else {
+		s.minimums = append(s.minimums, s.minimums[len(s.minimums)-1])
+	}
 }
 
-// Pop снимает верхний элемент и возвращает его. Стек не пустой - это гарантирует вызывающий.
 func (s *MinStack) Pop() int {
-	// TODO: ваш код
-	return 0
+	popElement := s.elements[len(s.elements)-1]
+	s.elements = s.elements[:len(s.elements)-1]
+	s.minimums = s.minimums[:len(s.minimums)-1]
+	return popElement
 }
 
-// Minimum возвращает самый маленький элемент в стеке за O(1). Стек не пустой.
 func (s *MinStack) Minimum() int {
-	// TODO: ваш код
-	return 0
+	return s.minimums[len(s.minimums)-1]
 }
